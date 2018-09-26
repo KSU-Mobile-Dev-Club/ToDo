@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ToDo</string>
+    <string name="good_progress">You rock!</string>
+    <string name="bad_progress">Are you ever going to do anything with your life??</string>
+    <string name="todo1">Homework :(</string>
+    <string name="todo2">Take a nap!!</string>
+</resources>
