@@ -2,6 +2,7 @@ package com.example.laure.todo;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -22,6 +23,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    private static final int ADD_ITEM_REQUEST_CODE = 100;
+
     //the list of To Do items that will be the data source for the ListView
     ArrayList<String> todoList = new ArrayList<String>();
 
@@ -53,18 +56,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void addButtonOnClick(View view) {
-        //get a reference to the EditText object
-        EditText editText = findViewById(R.id.todo_edittext);
+    public void addItemClickHandler(View view) {
+        //Create an Intent that tells Android we want to start the AddItemActivity class
+        Intent intent = new Intent(this, AddItemActivity.class);
 
-        //add the text in the EditText to the ListView
-        todoList.add(editText.getText().toString());
-
-        //Remove the text from the EditText
-        editText.setText("");
-
-        //tell the adapter to refresh the ListView
-        adapter.notifyDataSetChanged();
+        //Start the AddItemActivity class, expecting to get a result back
+        startActivityForResult(intent, ADD_ITEM_REQUEST_CODE);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        //Check to see if the AddItemActivity is returning to us
+        if (requestCode == ADD_ITEM_REQUEST_CODE)
+        {
+            //Check to see if the user clicked the Submit button (vs. the back button)
+            if (resultCode == RESULT_OK)
+            {
+                //Grab the extra from the Intent (this is the To Do item)
+                String todo = data.getStringExtra(AddItemActivity.NEW_TODO_ITEM);
+
+                //Add the new To Do item to the list
+                todoList.add(todo);
+
+                //Tell the adapter to refresh the ListView
+                adapter.notifyDataSetChanged();
+            }
+        }
+    }
 }
