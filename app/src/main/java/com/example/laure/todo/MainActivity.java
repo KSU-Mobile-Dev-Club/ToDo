@@ -8,7 +8,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.GestureDetector;
+import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -54,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
         //give the adapter to the ListView
         listView.setAdapter(adapter);
     }
-
 
     public void addItemClickHandler(View view) {
         //Create an Intent that tells Android we want to start the AddItemActivity class
