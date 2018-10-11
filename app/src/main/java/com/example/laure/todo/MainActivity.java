@@ -1,9 +1,11 @@
 package com.example.laure.todo;
 
 import android.annotation.SuppressLint;
+import android.arch.persistence.room.Room;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -24,35 +26,40 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static final int ADD_ITEM_REQUEST_CODE = 100;
 
-    //the list of To Do items that will be the data source for the ListView
-    ArrayList<String> todoList = new ArrayList<String>();
+    List<ToDo> todoList;
 
     //the adapter that converts our
-    ArrayAdapter<String> adapter;
+    ArrayAdapter adapter;
 
     //The View object that displays our To Do items to the user
     ListView listView;
+
+    MyDatabase myDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Adding a few starting items to our ArrayList
-        todoList.add("homework");
-        todoList.add("exercise");
-        todoList.add("nap");
+        myDatabase = Room.databaseBuilder(this, MyDatabase.class, MyDatabase.DB_NAME)
+                .allowMainThreadQueries()
+                .build();
 
         //get a reference to the ListView object
         listView = findViewById(R.id.todo_listview);
 
+        todoList = myDatabase.daoAccess().fetchAllToDos();
+
         //creating our ArrayAdapter - we give it the context of the current Activity,
         //one of Android's built in list item layouts, and the item source
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_checked, todoList);
+        adapter = new ArrayAdapter(this,
+                android.R.layout.simple_list_item_checked,
+                todoList);
 
         //give the adapter to the ListView
         listView.setAdapter(adapter);
@@ -66,7 +73,12 @@ public class MainActivity extends AppCompatActivity {
         int position = info.position;
         if (item.getItemId() == R.id.delete)
         {
-            todoList.remove(position);
+            ToDo toDoToRemove = todoList.get(position);
+            myDatabase.daoAccess().deleteToDo(toDoToRemove);
+
+            todoList.clear();
+            todoList.addAll(myDatabase.daoAccess().fetchAllToDos());
+
             adapter.notifyDataSetChanged();
             return true;
         }
@@ -97,10 +109,14 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK)
             {
                 //Grab the extra from the Intent (this is the To Do item)
-                String todo = data.getStringExtra(AddItemActivity.NEW_TODO_ITEM);
+                ToDo todo = new ToDo();
+                todo.name = data.getStringExtra(AddItemActivity.NEW_TODO_ITEM);
 
                 //Add the new To Do item to the list
-                todoList.add(todo);
+                myDatabase.daoAccess().insertToDo(todo);
+
+                todoList.clear();
+                todoList.addAll(myDatabase.daoAccess().fetchAllToDos());
 
                 //Tell the adapter to refresh the ListView
                 adapter.notifyDataSetChanged();
