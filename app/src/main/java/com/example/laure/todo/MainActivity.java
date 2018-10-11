@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.GestureDetector;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -55,6 +56,27 @@ public class MainActivity extends AppCompatActivity {
 
         //give the adapter to the ListView
         listView.setAdapter(adapter);
+
+        registerForContextMenu(listView);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int position = info.position;
+        if (item.getItemId() == R.id.delete)
+        {
+            todoList.remove(position);
+            adapter.notifyDataSetChanged();
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_list, menu);
     }
 
     public void addItemClickHandler(View view) {
