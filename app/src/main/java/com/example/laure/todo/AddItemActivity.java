@@ -18,21 +18,8 @@ public class AddItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
         editText = findViewById(R.id.input_item);
-
-        findViewById(R.id.input_item).setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    hideSoftKeyboard(v);
-                }
-            }
-        });
     }
 
-    private void hideSoftKeyboard(View view) {
-        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
 
     public void submitButtonClickHandler(View view) {
         //get the text in the edit text (this is the new To Do Item)

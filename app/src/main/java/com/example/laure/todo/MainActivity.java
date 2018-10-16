@@ -31,7 +31,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private static final int ADD_ITEM_REQUEST_CODE = 100;
 
-    List<ToDo> todoList;
+    ArrayList<String> todoList;
 
     //the adapter that converts our
     ArrayAdapter adapter;
@@ -39,31 +39,27 @@ public class MainActivity extends AppCompatActivity {
     //The View object that displays our To Do items to the user
     ListView listView;
 
-    MyDatabase myDatabase;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        myDatabase = Room.databaseBuilder(this, MyDatabase.class, MyDatabase.DB_NAME)
-                .allowMainThreadQueries()
-                .build();
-
         //get a reference to the ListView object
         listView = findViewById(R.id.todo_listview);
 
-        todoList = myDatabase.daoAccess().fetchAllToDos();
+        //Create a new List of todo items
+        todoList = new ArrayList<String>();
 
         //creating our ArrayAdapter - we give it the context of the current Activity,
         //one of Android's built in list item layouts, and the item source
         adapter = new ArrayAdapter(this,
-                R.layout.listview_item,
+                android.R.layout.simple_list_item_checked,
                 todoList);
 
         //give the adapter to the ListView
         listView.setAdapter(adapter);
 
+        //tell Android that our ListView items should make a Context Menu when they are long clicked
         registerForContextMenu(listView);
 
     }
@@ -74,12 +70,10 @@ public class MainActivity extends AppCompatActivity {
         int position = info.position;
         if (item.getItemId() == R.id.delete)
         {
-            ToDo toDoToRemove = todoList.get(position);
-            myDatabase.daoAccess().deleteToDo(toDoToRemove);
+            //remove the selected item from the List of ToDos
+            todoList.remove(position);
 
-            todoList.clear();
-            todoList.addAll(myDatabase.daoAccess().fetchAllToDos());
-
+            //tell the adapter to refresh the ListView
             adapter.notifyDataSetChanged();
             return true;
         }
@@ -88,7 +82,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+
         MenuInflater inflater = getMenuInflater();
+
+        //tell the inflater to build a Context Menu using the menu resource file we made
         inflater.inflate(R.menu.menu_list, menu);
     }
 
@@ -110,14 +107,10 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK)
             {
                 //Grab the extra from the Intent (this is the To Do item)
-                ToDo todo = new ToDo();
-                todo.name = data.getStringExtra(AddItemActivity.NEW_TODO_ITEM);
+                String todo = data.getStringExtra(AddItemActivity.NEW_TODO_ITEM);
 
                 //Add the new To Do item to the list
-                myDatabase.daoAccess().insertToDo(todo);
-
-                todoList.clear();
-                todoList.addAll(myDatabase.daoAccess().fetchAllToDos());
+                todoList.add(todo);
 
                 //Tell the adapter to refresh the ListView
                 adapter.notifyDataSetChanged();
