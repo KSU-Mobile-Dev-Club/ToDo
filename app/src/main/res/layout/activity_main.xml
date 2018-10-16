@@ -5,17 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/colorScreenBackground">
 
 
     <ListView
         android:id="@+id/todo_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:choiceMode="multipleChoice"/>
+        android:padding="20dp"
+        android:choiceMode="multipleChoice"
+        android:clickable="true"
+        android:divider="@color/colorScreenBackground"
+        android:dividerHeight="10dp"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floatingActionButton"
+        style="@style/MyFABStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
