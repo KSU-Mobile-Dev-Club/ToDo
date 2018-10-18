@@ -1,32 +1,16 @@
 package com.example.laure.todo;
 
-import android.annotation.SuppressLint;
-import android.arch.persistence.room.Room;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.SystemClock;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ContextMenu;
-import android.view.GestureDetector;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static final int ADD_ITEM_REQUEST_CODE = 100;
@@ -49,6 +33,11 @@ public class MainActivity extends AppCompatActivity {
 
         //Create a new List of todo items
         todoList = new ArrayList<String>();
+
+        //add a few dummy items to the todoList
+        todoList.add("go to class!");
+        todoList.add("take a nap!");
+        todoList.add("walk the dog!");
 
         //creating our ArrayAdapter - we give it the context of the current Activity,
         //one of Android's built in list item layouts, and the item source

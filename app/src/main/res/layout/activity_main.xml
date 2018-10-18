@@ -9,6 +9,7 @@
 
 
     <ListView
+        style="@style/ListViewStyle"
         android:id="@+id/todo_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

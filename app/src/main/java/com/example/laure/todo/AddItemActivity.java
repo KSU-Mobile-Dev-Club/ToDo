@@ -11,6 +11,7 @@ import android.widget.EditText;
 public class AddItemActivity extends AppCompatActivity {
 
     public static final String NEW_TODO_ITEM = "ToDoItem";
+
     EditText editText;
 
     @Override
@@ -18,6 +19,18 @@ public class AddItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
         editText = findViewById(R.id.input_item);
+
+        //setting a listener on the edit text so that when the users clicks out of the EditText,
+        //the OnFocusChange method will run
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                //close the soft keyboard
+                InputMethodManager manager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                manager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
+            }
+        });
     }
 
 

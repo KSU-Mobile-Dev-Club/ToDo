@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -9,17 +9,34 @@
     </style>
 
     <style name="TextViewStyle">
-        <item name="android:background">@color/colorPrimaryDark</item>
+        <item name="android:background">@color/colorPrimary</item>
         <item name="android:textColor">@color/colorTextIcon</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textAppearance">@android:style/TextAppearance.Large</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:checkMarkTint">@color/colorTextIcon</item>
-        <item name="android:padding">10dp</item>
+        <item name="android:textColorHint">@color/colorDivider</item>
+        <item name="android:checkMarkTint" tools:ignore="NewApi">@color/colorTextIcon</item>
+        <item name="android:padding">20dp</item>
     </style>
 
     <style name="FABStyle">
         <item name="android:tint">@color/colorTextIcon</item>
+    </style>
+
+    <style name="ButtonStyle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.Large</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:background">@color/colorPrimaryLight</item>
+        <item name="android:textColor">@color/colorPrimaryText</item>
+    </style>
+
+    <style name="ListViewStyle">
+        <item name="android:divider">@color/colorDivider</item>
+        <item name="android:dividerHeight">5dp</item>
     </style>
 
 </resources>
