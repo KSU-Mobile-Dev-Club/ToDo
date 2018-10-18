@@ -8,5 +8,18 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="TextViewStyle">
+        <item name="android:background">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/colorTextIcon</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.Large</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:checkMarkTint">@color/colorTextIcon</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
+    <style name="FABStyle">
+        <item name="android:tint">@color/colorTextIcon</item>
+    </style>
 
 </resources>

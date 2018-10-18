@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         //creating our ArrayAdapter - we give it the context of the current Activity,
         //one of Android's built in list item layouts, and the item source
         adapter = new ArrayAdapter(this,
-                android.R.layout.simple_list_item_checked,
+                R.layout.list_item,
                 todoList);
 
         //give the adapter to the ListView
