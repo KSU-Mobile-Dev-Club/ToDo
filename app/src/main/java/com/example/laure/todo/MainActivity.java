@@ -11,11 +11,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static final int ADD_ITEM_REQUEST_CODE = 100;
 
-    ArrayList<String> todoList;
+    List<Todo> todoList;
 
     //the adapter that converts our
     ArrayAdapter adapter;
@@ -23,21 +24,20 @@ public class MainActivity extends AppCompatActivity {
     //The View object that displays our To Do items to the user
     ListView listView;
 
+    TodoDao todoDao;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        todoDao = TodoDatabase.getDatabase(this).todoDao();
+
         //get a reference to the ListView object
         listView = findViewById(R.id.todo_listview);
 
         //Create a new List of todo items
-        todoList = new ArrayList<String>();
-
-        //add a few dummy items to the todoList
-        todoList.add("go to class!");
-        todoList.add("take a nap!");
-        todoList.add("walk the dog!");
+        todoList = todoDao.getAll();
 
         //creating our ArrayAdapter - we give it the context of the current Activity,
         //one of Android's built in list item layouts, and the item source
@@ -59,8 +59,11 @@ public class MainActivity extends AppCompatActivity {
         int position = info.position;
         if (item.getItemId() == R.id.delete)
         {
-            //remove the selected item from the List of ToDos
-            todoList.remove(position);
+            todoDao.delete(todoList.get(position));
+
+            todoList.clear();
+
+            todoList.addAll(todoDao.getAll());
 
             //tell the adapter to refresh the ListView
             adapter.notifyDataSetChanged();
@@ -96,10 +99,15 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK)
             {
                 //Grab the extra from the Intent (this is the To Do item)
-                String todo = data.getStringExtra(AddItemActivity.NEW_TODO_ITEM);
+                String todoName = data.getStringExtra(AddItemActivity.NEW_TODO_ITEM);
 
-                //Add the new To Do item to the list
-                todoList.add(todo);
+                Todo todo = new Todo(todoName);
+
+                todoDao.insert(todo);
+
+                todoList.clear();
+
+                todoList.addAll(todoDao.getAll());
 
                 //Tell the adapter to refresh the ListView
                 adapter.notifyDataSetChanged();
