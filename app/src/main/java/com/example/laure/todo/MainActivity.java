@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     List<Todo> todoList;
 
     //the adapter that converts our
-    ArrayAdapter adapter;
+    TodoAdapter adapter;
 
     //The View object that displays our To Do items to the user
     ListView listView;
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         //creating our ArrayAdapter - we give it the context of the current Activity,
         //one of Android's built in list item layouts, and the item source
-        adapter = new ArrayAdapter(this,
+        adapter = new TodoAdapter(this,
                 R.layout.list_item,
                 todoList);
 
@@ -50,6 +50,15 @@ public class MainActivity extends AppCompatActivity {
 
         //tell Android that our ListView items should make a Context Menu when they are long clicked
         registerForContextMenu(listView);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Todo todo = todoList.get(position);
+                todo.isDone = !todo.isDone;
+                todoDao.update(todo);
+            }
+        });
 
     }
 
